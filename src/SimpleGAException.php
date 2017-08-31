@@ -12,12 +12,14 @@ namespace SimpleGA;
 use Throwable;
 
 define('SIMPLEGA_NO_FITNESS', 1);
+define('SIMPLEGA_NO_GENOME_FOUND', 2);
+define('SIMPLEGA_TOO_MANY_GENES', 3);
 
 class SimpleGAException extends \Exception {
   public function __construct(
     $message = "",
     $code = 0,
-    \Throwable $previous = NULL
+    Throwable $previous = NULL
   ) {
     parent::__construct($message, $code, $previous);
   }
