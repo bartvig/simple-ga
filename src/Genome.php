@@ -15,7 +15,7 @@ class Genome implements GenomeInterface {
 
   protected $fitness = NULL;
 
-  protected $genome;
+  protected $genome = [];
 
   public function __construct($randomGenerator) {
     $this->randomGenerator = $randomGenerator;
@@ -28,9 +28,8 @@ class Genome implements GenomeInterface {
   public function generate(array $parts = []) {
     if (!empty($parts)) {
       foreach ($parts as $part) {
-        $this->genome = $this->genome + $part;
+        $this->genome = array_merge($this->genome, $part);
       }
-      return;
     }
   }
 
@@ -49,6 +48,7 @@ class Genome implements GenomeInterface {
   }
 
   public function toString() {
+    return '';
   }
 
 }
