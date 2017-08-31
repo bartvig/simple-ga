@@ -45,6 +45,9 @@ class Genome implements GenomeInterface {
     return $this->fitness;
   }
 
+  public function getPart($a, $b) {
+  }
+
   public function toString() {
   }
 

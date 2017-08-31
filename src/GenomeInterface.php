@@ -18,6 +18,8 @@ interface GenomeInterface {
 
   public function getFitness();
 
+  public function getPart($a, $b);
+
   public function toString();
 
 }
