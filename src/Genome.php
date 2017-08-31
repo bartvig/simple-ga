@@ -17,7 +17,7 @@ class Genome implements GenomeInterface {
 
   protected $genome;
 
-  public function __construct(\SimpleGA\RandomInterface $randomGenerator) {
+  public function __construct($randomGenerator) {
     $this->randomGenerator = $randomGenerator;
   }
 
@@ -43,12 +43,6 @@ class Genome implements GenomeInterface {
     if (is_null($this->fitness)) {
       throw new SimpleGAException('Genome is not evaluated', SIMPLEGA_NO_FITNESS);
     }
-  }
-
-  static public function create(RandomInterface $randomGenerator) {
-    return function($randomGenerator) {
-      return new self($randomGenerator);
-    };
   }
 
 }

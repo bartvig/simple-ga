@@ -8,7 +8,7 @@ namespace SimpleGA;
 
 interface GenomeInterface {
 
-  public function __construct(RandomInterface $randomGenerator);
+  public function __construct($randomGenerator);
 
   public function generate(array $parts);
 
@@ -17,7 +17,5 @@ interface GenomeInterface {
   public function evaluate();
 
   public function getFitness();
-
-  static public function create(RandomInterface $randomGenerator);
 
 }
