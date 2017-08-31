@@ -73,7 +73,11 @@ class Population implements PopulationInterface {
   }
 
   protected function copyElite() {
-
+    $elite = [];
+    for ($i = 0; $i < $this->container['elite_count']; $i++) {
+      $elite[] = $this->genomes[$i];
+    }
+    return $elite;
   }
 
 }
