@@ -16,4 +16,9 @@ interface PopulationInterface {
   public function __construct(Container $container);
 
   public function initialize();
+
+  public function nextGeneration();
+
+  public function getFittestGenome();
+
 }
