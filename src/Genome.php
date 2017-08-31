@@ -35,14 +35,17 @@ class Genome implements GenomeInterface {
   }
 
   public function evaluate() {
-    // TODO: Implement evaluate() method.
   }
 
   public function getFitness() {
-    // TODO: Implement getFitness() method.
     if (is_null($this->fitness)) {
       throw new SimpleGAException('Genome is not evaluated', SIMPLEGA_NO_FITNESS);
     }
+
+    return $this->fitness;
+  }
+
+  public function toString() {
   }
 
 }
