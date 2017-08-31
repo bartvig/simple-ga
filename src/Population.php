@@ -49,7 +49,28 @@ class Population implements PopulationInterface {
     // Copy the elites to the new population.
     $new_genomes = $this->copyElite();
 
+    $random = $this->container['random_generator'];
     // Produce offspring until new population is done.
+    $population_size = $this->container['population_size'];
+    while (count($new_genomes) < $population_size) {
+      // Find two parents.
+      $first_parent = $this->findParent();
+      $second_parent = $this->findParent();
+
+      // Produce two offspring for these two parents.
+      $split_a = $random();
+      $split_b = $random();
+      while ($split_a == $split_b) {
+        $split_b = $random();
+      }
+      $split = [$split_a, $split_b];
+      sort($split);
+
+      $first_child = $first_parent->getPart(1, $split[0] - 1) + $second_parent->getPart($split[0], $split[1]) + $first_parent->getPart($split[1], 8);
+      $second_child = $second_parent->getPart(1, $split[0] - 1) + $first_parent->getPart($split[0], $split[1]) + $second_parent->getPart($split[1], 8);
+      $new_genomes[] = $first_child;
+      $new_genomes[] = $second_child;
+    }
   }
 
   protected function evaluatePopulation() {
@@ -78,6 +99,21 @@ class Population implements PopulationInterface {
       $elite[] = $this->genomes[$i];
     }
     return $elite;
+  }
+
+  protected function findParent() {
+    $max = 65535;
+    $random = random_int(0, $max);
+    $current = 0;
+
+    foreach ($this->genomes as $genome) {
+      /** @var \QueensGA\QueensGenome $genome */
+      $val = $max / ($genome->getFitness() + 1);
+      $current += $val;
+      if ($current >= $random) {
+        return $genome;
+      }
+    }
   }
 
 }
