@@ -145,7 +145,6 @@ class Population implements PopulationInterface {
       }
       $split = [$split_a, $split_b];
       sort($split);
-//      $split[1]++;
 
       /** @var Genome $first_child */
       $first_child = $this->container['genome'];
