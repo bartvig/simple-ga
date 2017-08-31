@@ -25,9 +25,11 @@ class Genome implements GenomeInterface {
     // TODO: Implement mutate() method.
   }
 
-  public function generate($firstPart = NULL, $secondPart = NULL, $thirdPart = NULL) {
-    if (!is_null($firstPart) && !is_null($secondPart) && !is_null($thirdPart)) {
-      $this->genome = $firstPart + $secondPart + $thirdPart;
+  public function generate(array $parts = []) {
+    if (!empty($parts)) {
+      foreach ($parts as $part) {
+        $this->genome = $this->genome + $part;
+      }
       return;
     }
   }

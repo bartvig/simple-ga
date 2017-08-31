@@ -10,7 +10,7 @@ interface GenomeInterface {
 
   public function __construct(RandomInterface $randomGenerator);
 
-  public function generate($firstPart, $secondPart, $thirdPart);
+  public function generate(array $parts);
 
   public function mutate();
 
