@@ -1,5 +1,8 @@
 {
     "require": {
         "pimple/pimple": "^3.2"
+    },
+    "autoload": {
+        "psr-0": {"SimpleGA": "src/"}
     }
 }
