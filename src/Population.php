@@ -19,6 +19,12 @@ class Population implements PopulationInterface {
   /** @var Genome[] $genomes */
   protected $genomes = [];
 
+  protected $currentGeneration = 0;
+
+  protected $sum = 0;
+
+  protected $max = 0;
+
   public function __construct(Container $container) {
     $this->container = $container;
   }
@@ -39,13 +45,23 @@ class Population implements PopulationInterface {
 
     // Sort genomes according to fitness.
     $this->sortPopulation();
+
+    // Calculate sum of all fitnesses.
+    $this->calculateMax();
   }
 
   public function getFittestGenome() {
     return $this->genomes[0];
   }
 
+  public function getGeneration() {
+    return $this->currentGeneration;
+  }
+
   public function nextGeneration() {
+    if (++$this->currentGeneration > $this->container['generations']) {
+      return FALSE;
+    }
     // Copy the elites to the new population.
     $new_genomes = $this->copyElite();
 
@@ -66,10 +82,34 @@ class Population implements PopulationInterface {
       $split = [$split_a, $split_b];
       sort($split);
 
-      $first_child = $first_parent->getPart(1, $split[0] - 1) + $second_parent->getPart($split[0], $split[1]) + $first_parent->getPart($split[1], 8);
-      $second_child = $second_parent->getPart(1, $split[0] - 1) + $first_parent->getPart($split[0], $split[1]) + $second_parent->getPart($split[1], 8);
+      /** @var Genome $first_child */
+      $first_child = $this->container['genome'];
+      /** @var Genome $second_child */
+      $second_child = $this->container['genome'];
+      $first_child_parts = [$first_parent->getPart(1, $split[0] - 1), $second_parent->getPart($split[0], $split[1]), $first_parent->getPart($split[1], 8)];
+      $first_child->generate($first_child_parts);
+      $second_child_parts = [$second_parent->getPart(1, $split[0] - 1), $first_parent->getPart($split[0], $split[1]), $second_parent->getPart($split[1], 8)];
+      $second_child->generate($second_child_parts);
       $new_genomes[] = $first_child;
       $new_genomes[] = $second_child;
+    }
+    $this->genomes = $new_genomes;
+
+    $this->mutatePopulation();
+    $this->evaluatePopulation();
+    $this->sortPopulation();
+    $this->calculateMax();
+
+    return TRUE;
+  }
+
+  protected function mutatePopulation() {
+    $mutation = $this->container['mutation_promille'];
+    foreach ($this->genomes as $genome) {
+      $rnd = rand(0, 1000);
+      if ($rnd < $mutation) {
+        $genome->mutate();
+      }
     }
   }
 
@@ -93,6 +133,20 @@ class Population implements PopulationInterface {
     });
   }
 
+  protected function calculateMax() {
+    $sum = 0;
+    foreach ($this->genomes as $genome) {
+      if ($genome->getFitness() > $this->max) {
+        $this->max = $genome->getFitness();
+      }
+    }
+
+    foreach ($this->genomes as $genome) {
+      $sum = $sum + $this->max - $genome->getFitness() + 1;
+    }
+    $this->sum = $sum;
+  }
+
   protected function copyElite() {
     $elite = [];
     for ($i = 0; $i < $this->container['elite_count']; $i++) {
@@ -102,18 +156,20 @@ class Population implements PopulationInterface {
   }
 
   protected function findParent() {
-    $max = 65535;
-    $random = random_int(0, $max);
+    $sum = $this->sum;
+    $random = random_int(0, $sum);
     $current = 0;
+    $max = $this->max;
 
     foreach ($this->genomes as $genome) {
       /** @var \QueensGA\QueensGenome $genome */
-      $val = $max / ($genome->getFitness() + 1);
+      $val = $max - $genome->getFitness() + 1;
       $current += $val;
       if ($current >= $random) {
         return $genome;
       }
     }
+
   }
 
 }
