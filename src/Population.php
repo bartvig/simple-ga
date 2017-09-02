@@ -73,8 +73,12 @@ class Population implements PopulationInterface {
    * @return \SimpleGA\Genome
    *   Get fittest genome.
    */
-  public function getFittestGenome() {
-    return $this->genomes[0];
+  public function getFittestGenome($count = 0) {
+    if (!$count) {
+      return $this->genomes[0];
+    }
+
+    return array_slice($this->genomes, 0, $count);
   }
 
   /**
