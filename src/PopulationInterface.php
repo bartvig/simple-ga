@@ -19,6 +19,8 @@ interface PopulationInterface {
 
   public function nextGeneration();
 
+  public function getGeneration();
+
   public function getFittestGenome($count);
 
 }
