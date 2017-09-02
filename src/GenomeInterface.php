@@ -10,11 +10,11 @@ interface GenomeInterface {
 
   public function __construct($randomGenerator);
 
-  public function generate(array $parts);
+  public function generate($parts);
 
   public function mutate();
 
-  public function evaluate();
+  public function evaluate($test);
 
   public function getFitness();
 

@@ -57,7 +57,7 @@ class Genome implements GenomeInterface {
    * @param array $parts
    *   One or more gene parts.
    */
-  public function generate(array $parts = []) {
+  public function generate($parts = []) {
     if (!empty($parts)) {
       foreach ($parts as $part) {
         $this->genome = array_merge($this->genome, $part);
@@ -70,7 +70,7 @@ class Genome implements GenomeInterface {
    *
    * Override this method.
    */
-  public function evaluate() {
+  public function evaluate($test = []) {
   }
 
   /**
