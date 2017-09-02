@@ -23,4 +23,8 @@ interface PopulationInterface {
 
   public function getFittestGenome($count);
 
+  public function exportGenomes($count);
+
+  public function importGenomes($genomes);
+
 }

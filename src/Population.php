@@ -70,7 +70,7 @@ class Population implements PopulationInterface {
   }
 
   /**
-   * @return \SimpleGA\Genome
+   * @return \SimpleGA\Genome|\SimpleGA\Genome[]
    *   Get fittest genome.
    */
   public function getFittestGenome($count = 0) {
@@ -293,4 +293,28 @@ class Population implements PopulationInterface {
 
     throw new SimpleGAException('No genome found. This means that data is corrupted.', SIMPLEGA_NO_GENOME_FOUND);
   }
+
+  /**
+   * Get the most fit genomes.
+   *
+   * @param $count
+   *
+   * @return array|\SimpleGA\Genome[]
+   */
+  public function exportGenomes($count) {
+    if ($count > 0) {
+      return $this->getFittestGenome($count);
+    }
+    return [];
+  }
+
+  /**
+   * Inject genomes into population.
+   *
+   * @param $genomes
+   */
+  public function importGenomes($genomes) {
+    $this->genomes = array_merge($this->genomes, $genomes);
+  }
+
 }
