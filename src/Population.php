@@ -164,17 +164,9 @@ class Population implements PopulationInterface {
       $first_child->generate($first_child_parts);
       $second_child->generate($second_child_parts);
 
-      // Clone children and mutate.
-      $third_child = clone $first_child;
-      $third_child->mutate();
-      $fourth_child = clone $second_child;
-      $fourth_child->mutate();
-
       // Save genomes.
       $new_genomes[] = $first_child;
       $new_genomes[] = $second_child;
-      $new_genomes[] = $third_child;
-      $new_genomes[] = $fourth_child;
     }
     for ($i = 0; $i < $population_random; $i++) {
       /** @var \SimpleGA\Genome $new */
