@@ -276,6 +276,9 @@ class Population implements PopulationInterface {
    */
   protected function findParent() {
     $sum = $this->sum;
+    if ($sum > PHP_INT_MAX) {
+      $sum = PHP_INT_MAX;
+    }
     $random = random_int(0, $sum);
     $current = 0;
     $max = $this->max;
