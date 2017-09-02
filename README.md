@@ -21,6 +21,9 @@ These variables must be configured in a Pimple container:
 - `population_random`: how many genomes to generate randomly for each population. This can be useful to introduce new random genes in a population.
 - `elite_count`: number of best genomes to copy to the next generation.
 - `mutation_promille`: mutation rate in thousandths, e.g. a mutation rate of 5% is `50`.
+- `genome`: generation of a specific genome implementation. This should return a new instance of a genome class. Example (when the Pimple container is called `$container`):
+  `$container['genome'] = $container->factory(function ($c) {
+  return new \QueensGA\QueensGenome($c['random_generator']); });`
 
 This variable can be configured:
 - `evaluate_points`: this is an associative array of keys and values to evaluate genomes against. E.g. some points in a quadratic equation: `[ 0 => 0, 2 => 4, 4 => 16 ]`.
