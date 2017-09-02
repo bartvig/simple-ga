@@ -135,7 +135,8 @@ class Population implements PopulationInterface {
 
     // Produce offspring until new population is done.
     $population_size = $this->container['population_size'];
-    while (count($new_genomes) < $population_size) {
+    $population_random = $this->container['population_random'];
+    while (count($new_genomes) < $population_size - $population_random) {
       // Find two parents.
       $first_parent = $this->findParent();
       $second_parent = $this->findParent();
@@ -175,6 +176,12 @@ class Population implements PopulationInterface {
       $new_genomes[] = $third_child;
       $new_genomes[] = $fourth_child;
     }
+    for ($i = 0; $i < $population_random; $i++) {
+      /** @var \SimpleGA\Genome $new */
+      $new = $this->container['genome'];
+      $new->generate();
+      $new_genomes[] = $new;
+    }
     $this->genomes = $new_genomes;
   }
 
@@ -186,7 +193,10 @@ class Population implements PopulationInterface {
    */
   protected function mutatePopulation() {
     $mutation = $this->container['mutation_promille'];
-    foreach ($this->genomes as $genome) {
+    foreach ($this->genomes as $i => $genome) {
+      if ($i < $this->container['elite_count']) {
+        continue;
+      }
       $rnd = rand(0, 1000);
       if ($rnd < $mutation) {
         $genome->mutate();
@@ -198,8 +208,12 @@ class Population implements PopulationInterface {
    * Evaluate fitness for all genomes in population.
    */
   protected function evaluatePopulation() {
+    $points = NULL;
+    if (isset($this->container['evaluate_points'])) {
+      $points = $this->container['evaluate_points'];
+    }
     foreach ($this->genomes as $genome) {
-      $genome->evaluate();
+      $genome->evaluate($points);
     }
   }
 
