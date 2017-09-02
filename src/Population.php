@@ -105,6 +105,8 @@ class Population implements PopulationInterface {
    *   the final generation.
    */
   public function nextGeneration() {
+    $this->currentGeneration++;
+
     // Copy the elites to the new population.
     $new_genomes = $this->copyElite();
 
@@ -115,7 +117,7 @@ class Population implements PopulationInterface {
     $this->sortPopulation();
     $this->calculateSum();
 
-    return $this->currentGeneration++;
+    return $this->currentGeneration;
   }
 
   /**
