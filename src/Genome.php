@@ -17,9 +17,9 @@ class Genome implements GenomeInterface {
 
   /**
    * @var null
-   *   Random number generator.
+   *   Container.
    */
-  protected $randomGenerator = NULL;
+  protected $container = NULL;
 
   /**
    * @var null
@@ -36,11 +36,15 @@ class Genome implements GenomeInterface {
   /**
    * Genome constructor.
    *
-   * @param $randomGenerator
+   * @param $container
    *   Random number generator to be used for selecting genes.
    */
-  public function __construct($randomGenerator) {
-    $this->randomGenerator = $randomGenerator;
+  public function __construct($container) {
+    $this->container = $container;
+  }
+
+  public function getSize() {
+    return count($this->genome);
   }
 
   /**

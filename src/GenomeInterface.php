@@ -8,7 +8,9 @@ namespace SimpleGA;
 
 interface GenomeInterface {
 
-  public function __construct($randomGenerator);
+  public function __construct($container);
+
+  public function getSize();
 
   public function generate($parts);
 
