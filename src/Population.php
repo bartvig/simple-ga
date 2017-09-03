@@ -130,8 +130,6 @@ class Population implements PopulationInterface {
    *   Existing genomes.
    */
   protected function produceOffspring($new_genomes) {
-    $random = $this->container['random_generator'];
-
     // Produce offspring until new population is done.
     $population_size = $this->container['population_size'];
     $population_random = $this->container['population_random'];
@@ -141,11 +139,11 @@ class Population implements PopulationInterface {
       $second_parent = $this->findParent();
 
       // Select where to split genomes.
-      $split_a = $random();
-      $split_b = $random();
+      $split_a = rand(1, $first_parent->getSize() - 1);
+      $split_b = rand(1, $first_parent->getSize() - 1);
       // Make sure the two split points are different.
       while ($split_a == $split_b) {
-        $split_b = $random();
+        $split_b = rand(1, $first_parent->getSize() - 1);
       }
       $split = [$split_a, $split_b];
       sort($split);
@@ -155,9 +153,11 @@ class Population implements PopulationInterface {
       /** @var Genome $second_child */
       $second_child = $this->container['genome'];
 
+      $size = $first_parent->getSize();
+
       // Produce new genes.
-      $first_child_parts = [$first_parent->getPart(1, $split[0] - 1), $second_parent->getPart($split[0], $split[1]), $first_parent->getPart($split[1] + 1, 8)];
-      $second_child_parts = [$second_parent->getPart(1, $split[0] - 1), $first_parent->getPart($split[0], $split[1]), $second_parent->getPart($split[1] + 1, 8)];
+      $first_child_parts = [$first_parent->getPart(1, $split[0] - 1), $second_parent->getPart($split[0], $split[1]), $first_parent->getPart($split[1] + 1, $size)];
+      $second_child_parts = [$second_parent->getPart(1, $split[0] - 1), $first_parent->getPart($split[0], $split[1]), $second_parent->getPart($split[1] + 1, $size)];
 
       // Generate new child genomes from new genes.
       $first_child->generate($first_child_parts);
@@ -265,7 +265,7 @@ class Population implements PopulationInterface {
    * The better the fitness, the more likely the genome will be selected.
    * This works linearly.
    *
-   * @return \QueensGA\QueensGenome|\SimpleGA\Genome
+   * @return \SimpleGA\Genome
    *   Return found genome.
    *
    * @throws \SimpleGA\SimpleGAException
@@ -283,7 +283,7 @@ class Population implements PopulationInterface {
     $max = $this->max;
 
     foreach ($this->genomes as $genome) {
-      /** @var \QueensGA\QueensGenome $genome */
+      /** @var \SimpleGA\Genome $genome */
       $val = $max - $genome->getFitness() + 1;
       $current += $val;
       if ($current >= $random) {
