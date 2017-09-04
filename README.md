@@ -10,7 +10,9 @@ Other customizations can be performed by overriding the classes `Genome` and `Po
 For an example of how to use SimpleGA, see https://github.com/bartvig/queens-ga
 
 ## Installation
-Use composer to install required libraries: `composer install`. Installation of composer is out of scope for this documentation.
+Use composer to install required libraries: `composer install`. Then you might have to run `composer dump-autoload -o` to make autoloading work properly.
+
+Installation of composer is out of scope for this documentation.
 
 ## How to run
 This is a generic implementation and can't be run on its own. See https://github.com/bartvig/queens-ga for an example of how to use this implementation.
