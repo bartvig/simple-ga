@@ -39,6 +39,8 @@ class Population implements PopulationInterface {
    */
   protected $max = 0;
 
+  protected $mutation = 0;
+
   /**
    * Population constructor.
    *
@@ -46,6 +48,14 @@ class Population implements PopulationInterface {
    */
   public function __construct(Container $container) {
     $this->container = $container;
+    $this->mutation = $this->container['mutation_promille'];
+  }
+
+  /**
+   * @param int|mixed $mutation
+   */
+  public function setMutation($mutation) {
+    $this->mutation = $mutation;
   }
 
   /**
@@ -183,7 +193,7 @@ class Population implements PopulationInterface {
    * is below the configured mutation threshold (in promilles), mutate genome.
    */
   protected function mutatePopulation() {
-    $mutation = $this->container['mutation_promille'];
+    $mutation = $this->mutation;
     foreach ($this->genomes as $i => $genome) {
       if ($i < $this->container['elite_count']) {
         continue;
