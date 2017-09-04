@@ -1,8 +1,18 @@
 {
-    "require": {
-        "pimple/pimple": "^3.2"
-    },
-    "autoload": {
-        "psr-0": {"SimpleGA": "src/"}
+  "name": "bartvig/simple-ga",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Morten Bartvig",
+      "email": "bartvig@gmail.com",
+      "role": "developer"
     }
+  ],
+  "require": {
+    "pimple/pimple": "^3.2"
+  },
+  "autoload": {
+    "psr-0": {"SimpleGA": "src/"}
+  }
 }
