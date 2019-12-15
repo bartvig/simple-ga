@@ -196,7 +196,7 @@ class Population implements PopulationInterface {
     $mutation = $this->mutation;
     foreach ($this->genomes as $i => $genome) {
       if ($i < $this->container['elite_count']) {
-        continue;
+        break;
       }
       $rnd = rand(0, 1000);
       if ($rnd < $mutation) {
