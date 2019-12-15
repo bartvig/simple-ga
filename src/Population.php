@@ -121,7 +121,7 @@ class Population implements PopulationInterface {
     $new_genomes = $this->copyElite();
 
     // Produce offspring, mutate, evaluate, etc.
-    $this->produceOffspring($new_genomes);
+    $this->produceOffspring($new_genomes, TRUE);
     $this->mutatePopulation();
     $this->evaluatePopulation();
     $this->sortPopulation();
@@ -136,10 +136,13 @@ class Population implements PopulationInterface {
    * Select two new parents and perform crossover to produce two new children,
    * until we have reached the configured population size.
    *
-   * @param $new_genomes
+   * @param array $new_genomes
    *   Existing genomes.
+   *
+   * @param bool $different_sizes
+   *   FALSE if genomes have the same size.
    */
-  protected function produceOffspring($new_genomes) {
+  protected function produceOffspring($new_genomes, $different_sizes = FALSE) {
     // Produce offspring until new population is done.
     $population_size = $this->container['population_size'];
     $population_random = $this->container['population_random'];
@@ -158,16 +161,31 @@ class Population implements PopulationInterface {
       $split = [$split_a, $split_b];
       sort($split);
 
+      if ($different_sizes) {
+        $split_a_ = rand(1, $second_parent->getSize() - 1);
+        $split_b_ = rand(1, $second_parent->getSize() - 1);
+        // Make sure the two split points are different.
+        while ($split_a_ == $split_b_) {
+          $split_b_ = rand(1, $second_parent->getSize() - 1);
+        }
+        $split_ = [$split_a_, $split_b_];
+        sort($split_);
+      }
+      else {
+        $split_ = $split;
+      }
+
       /** @var Genome $first_child */
       $first_child = $this->container['genome'];
       /** @var Genome $second_child */
       $second_child = $this->container['genome'];
 
       $size = $first_parent->getSize();
+      $size_ = $second_parent->getSize();
 
       // Produce new genes.
       $first_child_parts = [$first_parent->getPart(1, $split[0] - 1), $second_parent->getPart($split[0], $split[1]), $first_parent->getPart($split[1] + 1, $size)];
-      $second_child_parts = [$second_parent->getPart(1, $split[0] - 1), $first_parent->getPart($split[0], $split[1]), $second_parent->getPart($split[1] + 1, $size)];
+      $second_child_parts = [$second_parent->getPart(1, $split_[0] - 1), $first_parent->getPart($split_[0], $split_[1]), $second_parent->getPart($split_[1] + 1, $size_)];
 
       // Generate new child genomes from new genes.
       $first_child->generate($first_child_parts);
